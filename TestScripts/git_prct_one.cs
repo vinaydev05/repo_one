@@ -14,27 +14,31 @@ namespace SeleniumLearning.TestScripts
         IWebDriver driver;
 
         [SetUp]
-        public void StartBrowser()
+        public void Startbrowser()
         {
             new WebDriverManager.DriverManager().SetUpDriver(new FirefoxConfig());
             driver = new FirefoxDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            driver.Url = "";
+           
         }
 
         [Test]
         public void TestMethod1()
         {
+            driver.Url = "https://testautomationpractice.blogspot.com";
+            string E_Url = "https://testautomationpractice.blogspot.com/";
+            Assert.AreEqual(E_Url, driver.Url);
+            Console.WriteLine("Hurrey Url Matches!!!");
 
         }
 
         [TearDown]
-        public void CloseBrowser()
+        public void Closebrowser()
         {
-           Thread.Sleep(1000);
             driver.Dispose();
         }
+
        
        
     }
