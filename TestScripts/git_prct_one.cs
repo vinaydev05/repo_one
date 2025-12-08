@@ -20,23 +20,23 @@ namespace SeleniumLearning.TestScripts
             driver = new FirefoxDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-           
+
         }
 
         [Test]
-        public void TestMethod1()
+        public void TestMethod_1()
         {
-            driver.Url = "https://testautomationpractice.blogspot.com";
-            string E_Url = "https://testautomationpractice.blogspot.com/";
-            Assert.AreEqual(E_Url, driver.Url);
-            Console.WriteLine("Hurrey Url Matches!!!");
-
+            driver.Url = "https://testautomationpractice.blogspot.com/";
+            Assert.AreEqual("https://testautomationpractice.blogspot.com/", driver.Url);
+            Console.WriteLine("URL Matches Today!!!");
         }
 
         [TearDown]
         public void Closebrowser()
         {
+            Thread.Sleep(4000);
             driver.Dispose();
+
         }
 
        
