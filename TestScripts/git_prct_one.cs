@@ -29,6 +29,24 @@ namespace SeleniumLearning.TestScripts
             driver.Url = "https://testautomationpractice.blogspot.com/";
             Assert.AreEqual("https://testautomationpractice.blogspot.com/", driver.Url);
             Console.WriteLine("URL Matches Today!!!");
+
+            //Name field identification, validating that it's empty and filling
+            IWebElement Name = driver.FindElement(By.CssSelector("#name"));
+            Assert.IsEmpty(Name.Text);
+            Name.SendKeys(Keys.Enter);
+            Thread.Sleep(2000);
+            Name.SendKeys("Priya");
+            Name.SendKeys(Keys.Tab);
+            Thread.Sleep(2000);
+
+            //Email field identification, validating that it's empty and adding value
+            IWebElement Email = driver.FindElement(By.XPath("//input[@placeholder='Enter EMail']"));
+            Assert.IsEmpty(Email.Text);
+            Email.SendKeys(Keys.Enter);
+            Thread.Sleep(2000);
+            Email.SendKeys("vinay@gmail.com");
+            Email.SendKeys(Keys.Tab);
+            
         }
 
         [TearDown]
