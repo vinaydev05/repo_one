@@ -21,16 +21,14 @@ namespace SeleniumLearning.TestScripts
             driver = new FirefoxDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
+            driver.Url = "https://testautomationpractice.blogspot.com/";
+            Assert.AreEqual("https://testautomationpractice.blogspot.com/", driver.Url);
+            Console.WriteLine("URL Matches Today!!!");
         }
 
         [Test]
         public void TestMethod_1()
         {
-            driver.Url = "https://testautomationpractice.blogspot.com/";
-            Assert.AreEqual("https://testautomationpractice.blogspot.com/", driver.Url);
-            Console.WriteLine("URL Matches Today!!!");
-
             //Name field identification, validating that it's empty and filling
             IWebElement Name = driver.FindElement(By.CssSelector("#name"));
             Assert.IsEmpty(Name.Text);
@@ -47,6 +45,7 @@ namespace SeleniumLearning.TestScripts
             Thread.Sleep(2000);
             Email.SendKeys("vinay@gmail.com");
             Email.SendKeys(Keys.Tab);
+            Thread.Sleep(2000);
 
             //Selecting values from dropdown and validating nothing is selected before
             IWebElement colors_dropdown = driver.FindElement(By.XPath("//select[@id='colors']"));
@@ -69,13 +68,80 @@ namespace SeleniumLearning.TestScripts
             select.SelectByText("Blue");
             Thread.Sleep(2000);
             select.SelectByIndex(3);
-          
+            Thread.Sleep(2000);
+
+            //Select a country from drop down
+            IWebElement country = driver.FindElement(By.CssSelector("#country"));
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", country);
+            Thread.Sleep(2000);
+
+            SelectElement select_country = new SelectElement(country);
+            select_country.SelectByText("India");
+            Thread.Sleep(2000);
+
+            //Select from scrolling dropdown
+            IWebElement selectfromscroll = driver.FindElement(By.CssSelector("#comboBox"));
+
+           
+
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", selectfromscroll);
+            Thread.Sleep(2000);
+
+            Assert.IsEmpty(selectfromscroll.Text);
+            selectfromscroll.SendKeys(Keys.Enter);
+            Thread.Sleep(2000);
+
+            IWebElement x =  driver.FindElement(By.XPath("//div[@id='dropdown']/div[text()='Item 40']"));
+
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", x);
+            Thread.Sleep(3000);
+            x.Click();
+
+        }
+
+        [Test]
+        public void Alertworks()
+        {
+            IWebElement simplealert = driver.FindElement(By.XPath("//button[text()='Simple Alert']"));
+
+            simplealert.Click();
+            
+            WebDriverWait wait = new WebDriverWait(driver,TimeSpan.FromSeconds(10));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.AlertIsPresent());
+
+            driver.SwitchTo().Alert();
+            Thread.Sleep(2000);
+            driver.SwitchTo().Alert().Accept();
+            Thread.Sleep(2000);
+
+            IWebElement confirmalert = driver.FindElement(By.XPath("//button[@id='confirmBtn']"));
+            confirmalert.Click();
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.AlertIsPresent());
+            driver.SwitchTo().Alert();
+            Thread.Sleep(2000);
+            driver.SwitchTo().Alert().Dismiss();
+            Thread.Sleep(2000);
+
+            IWebElement promptalert = driver.FindElement(By.CssSelector("#promptBtn"));
+            promptalert.Click();
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.AlertIsPresent());
+
+            driver.SwitchTo().Alert();
+            driver.SwitchTo().Alert().SendKeys("Lovely!!");
+            Thread.Sleep(2000);
+            driver.SwitchTo().Alert().Accept();
+
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("demo")));
+            string x = driver.FindElement(By.Id("demo")).Text;
+            Console.WriteLine(x);
+
+            
         }
 
         [TearDown]
         public void Closebrowser()
         {
-            Thread.Sleep(10000);
+            Thread.Sleep(5000);
             driver.Dispose();
 
         }
