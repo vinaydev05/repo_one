@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -138,6 +139,56 @@ namespace SeleniumLearning.TestScripts
             
         }
 
+        [Test, Category("one")]
+        public void Actions_implementation()
+        {
+            
+            IWebElement startbutton = driver.FindElement(By.Name("start"));
+
+            WebDriverWait wait = new WebDriverWait(driver,TimeSpan.FromSeconds(10));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Name("start")));
+
+            string z = startbutton.GetCssValue("background-color");
+            Console.WriteLine(z);
+
+            Actions x = new Actions(driver);
+            x.MoveToElement(startbutton).Click().Perform();
+            
+            x.MoveByOffset(-200,-200).Perform();
+            //Thread.Sleep(1000);
+
+            IWebElement stopbutton = driver.FindElement(By.Name("stop"));
+            wait.Until(d =>
+                            stopbutton.GetCssValue("background-color")
+                            .Equals("rgb(255, 0, 0)")
+                       );
+
+
+            string y = stopbutton.GetCssValue("background-color");
+            Console.WriteLine(y);
+
+        }
+
+        [Test, Category("two")]
+        public void selectday()
+        {
+            string str = Myday();
+            IWebElement day = driver.FindElement(By.XPath("//input[@id='"+str+"']"));
+
+            Assert.IsFalse(day.Selected, "Checkbox should not be selected but selected");
+
+            day.Click();
+            Assert.IsTrue(day.Selected); 
+           
+        }
+
+        public static string Myday()
+        {
+            string day = "tuesday";
+            return day;
+        }
+
+        
         [TearDown]
         public void Closebrowser()
         {
