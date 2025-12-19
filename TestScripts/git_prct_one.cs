@@ -188,7 +188,28 @@ namespace SeleniumLearning.TestScripts
             return day;
         }
 
-        
+        [Test]
+        public void Newtab()
+        {
+            IWebElement btn = driver.FindElement(By.XPath("//button[text()='New Tab']"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView();", btn);
+
+            Thread.Sleep(2000);
+            btn.Click();
+            Thread.Sleep(1000);
+
+            string parentwindow = driver.WindowHandles[0];
+            string childwindow = driver.WindowHandles[1];
+
+            driver.SwitchTo().Window(childwindow);
+            Thread.Sleep(2000);
+            driver.SwitchTo().Window(parentwindow);
+
+
+        }
+
+
         [TearDown]
         public void Closebrowser()
         {
