@@ -210,6 +210,72 @@ namespace SeleniumLearning.TestScripts
         }
 
 
+        [Test]
+        public void Date_Selection()
+        {
+            IWebElement date = driver.FindElement(By.XPath("//input[@id='datepicker']"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView();", date);
+
+            //string before = date.Text;
+
+            date.Click();
+            date.SendKeys("20/12/2025");
+            date.SendKeys(Keys.Enter);
+
+            //string after = date.Text;
+
+            Thread.Sleep(1000);
+
+            IWebElement date2 = driver.FindElement(By.Id("txtDate"));
+            js.ExecuteScript("document.getElementById('txtDate').value='2025-12-21';");
+            Thread.Sleep(2000);
+
+            js.ExecuteScript("document.getElementById('start-date').value='2025-12-22';");
+
+        }
+
+        [Test]
+        public void Pointme()
+        {
+            IWebElement text = driver.FindElement(By.XPath("//h2[text()='Mouse Hover']"));
+            IWebElement point = driver.FindElement(By.XPath("//button[text()='Point Me']"));
+
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView();", text);
+
+            Thread.Sleep(2000);
+
+            Actions x = new Actions(driver);
+            x.MoveToElement(point).Build().Perform();
+            Thread.Sleep(2000);
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//a[text()='Mobiles']")));
+
+            IWebElement list1 = driver.FindElement(By.XPath("//a[text()='Mobiles']"));
+            list1.Click();
+
+
+        }
+
+        [Test]
+        public void Dreagndrop()
+        {
+            IWebElement dragndrop = driver.FindElement(By.XPath("//h2[text()='Drag and Drop']"));
+
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView();", dragndrop);
+
+            Thread.Sleep(2000);
+
+            IWebElement source = driver.FindElement(By.CssSelector("#draggable"));
+            IWebElement destination = driver.FindElement(By.CssSelector("#droppable"));
+
+            Actions x = new Actions(driver);
+            x.DragAndDrop(source, destination).Perform();
+        }
+
         [TearDown]
         public void Closebrowser()
         {
