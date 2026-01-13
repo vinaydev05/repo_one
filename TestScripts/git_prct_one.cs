@@ -276,6 +276,100 @@ namespace SeleniumLearning.TestScripts
             x.DragAndDrop(source, destination).Perform();
         }
 
+        [Test]
+        public void doubleclickcheck()
+        {
+            IWebElement text = driver.FindElement(By.XPath("//h2[text()='Double Click']"));
+            IWebElement text1 = driver.FindElement(By.XPath("//button[text()='Copy Text']"));
+            IWebElement text2 = driver.FindElement(By.XPath("//input[@id='field2']"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView();", text);
+            Thread.Sleep(2000);
+
+            Actions k = new Actions(driver);
+            k.MoveToElement(text1).DoubleClick().Build().Perform();
+            Thread.Sleep(1000);
+
+            string v = text2.GetAttribute("value");
+            Console.WriteLine(v);
+
+        }
+
+        [Test]
+        public void Uploadfiles()
+        {
+            //string file1 = "C:\\Users\\HP\\Desktop\\Upload 1.docx";
+            string[] files =
+            {
+                "C:\\Users\\HP\\Desktop\\upload 2.docx",
+                "C:\\Users\\HP\\Desktop\\Upload 1.docx"
+            };
+
+            IWebElement upload1 = driver.FindElement(By.Id("singleFileInput"));
+            IWebElement upload2 = driver.FindElement(By.Id("multipleFilesInput"));
+            IWebElement rolldown = driver.FindElement(By.XPath("//h2[text()='Upload Files']"));
+            IWebElement upbtn1 = driver.FindElement(By.XPath("//button[text()='Upload Multiple Files']"));
+
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView();", rolldown);
+            Thread.Sleep(2000);
+
+            foreach (var file in files)
+            {
+                upload2.SendKeys(file);
+            }
+            upbtn1.Click();
+
+
+
+        }
+
+        [Test]
+        public void Slidebar()
+        {
+            IWebElement slidertitle = driver.FindElement(By.XPath("//h2[text()='Slider']"));
+            IWebElement slider = driver.FindElement(By.XPath("//div[@id='slider-range']/span[2]"));
+
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView({behavior:'smooth'});", slidertitle);
+            Thread.Sleep(2000);
+
+            Actions x = new Actions(driver);
+            x.ClickAndHold(slider).MoveByOffset(50, 0).Release().Perform();
+            x.ClickAndHold(slider).MoveByOffset(-30, 0).Release().Perform();
+        }
+
+        [Test]
+        public void Pagination_and_recordselect()
+        {
+            IWebElement title11 = driver.FindElement(By.XPath("//h2[text()='Pagination Web Table']"));
+
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView({behavior:'smooth'});", title11);
+            //Thread.Sleep(3000);
+
+            ////table[@id='productTable']/tbody/tr
+            IList<IWebElement> pages = driver.FindElements(By.XPath("//ul[@id='pagination']//a"));
+            int pagecount = driver.FindElements(By.XPath("//ul[@id='pagination']//a")).Count;
+
+            for (int i = 0; i < pages.Count; i++)
+            {
+                pages[i].Click();
+
+                IList<IWebElement> checkboxs = driver.FindElements(By.XPath("//table[@id='productTable']/tbody/tr/td[4]/input"));
+                foreach (var x in checkboxs)
+                {
+                    x.Click();
+                    Thread.Sleep(1000);
+                }
+
+                Thread.Sleep(1000);
+
+            }
+
+
+        }
+
         [TearDown]
         public void Closebrowser()
         {
